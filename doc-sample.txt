@@ -1,0 +1,134 @@
+/
+  @swagger
+  /users:
+    post:
+      parameters:
+       - in: body
+         name: user
+         description: new user data
+         schema:
+           type: object
+           required:
+             - name
+             - email
+             - password
+           properties:
+             email:
+               type: string
+               example: johndoe@abc.com
+             name:
+               type: string
+               example: John Doe
+             password:
+               type: string
+               example: Password1!
+             age:
+               type: number
+               example: 20
+      description: Signs up user
+      responses:
+        201:
+          description: A JSON object containing user data
+          content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 user:
+                   type: object
+                   properties:
+                     age:
+                       type: number
+                       example: 20
+//                      __id:
+//                        type: string
+//                        example: 60fd4a4ca9ed6c3a79dfa419
+//                      name:
+//                        type: string
+//                        example: John Doe
+//                      email:
+//                        type: string
+//                        example: johndoe@abc.com
+//                      createdAt:
+//                        type: string
+//                        example: 2021-07-25T11:26:04.018Z
+//                      updatedAt:
+//                        type: string
+//                        example: 2021-07-25T11:26:06.012Z
+//                  token:
+//                    type: string
+//                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGZkNGE0Y2E5ZWQ2YzNhNzlkZmE0MTkiLCJpYXQiOjE2MjcyMTIzNjZ9.TdqgLCLPa_h7zZu9lejyVAYUx-AZ62Ky1562HWzh94A
+//         400:
+//           description: Unable to singup user
+//  /
+
+/
+  @swagger
+  /users/login:
+    post:
+      parameters:
+       - in: body
+         name: user
+         description: new user data
+         schema:
+           type: object
+           required:
+             - email
+             - password
+           properties:
+             email:
+               type: string
+               example: johndoe@abc.com
+             password:
+               type: string
+               example: Password1!
+      description: Logs in user
+      responses:
+        200:
+          description: A JSON object containing user data
+          content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 user:
+                   type: object
+                   properties:
+                     age:
+                       type: number
+                       example: 20
+                     __id:
+                       type: string
+                       example: 60fd4a4ca9ed6c3a79dfa419
+                     name:
+                       type: string
+                       example: John Doe
+                     email:
+                       type: string
+                       example: johndoe@abc.com
+                     createdAt:
+                       type: string
+                       example: 2021-07-25T11:26:04.018Z
+                     updatedAt:
+                       type: string
+                       example: 2021-07-25T11:26:06.012Z
+                 token:
+                   type: string
+                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGZkNGE0Y2E5ZWQ2YzNhNzlkZmE0MTkiLCJpYXQiOjE2MjcyMTIzNjZ9.TdqgLCLPa_h7zZu9lejyVAYUx-AZ62Ky1562HWzh94A
+        400:
+          description: Login unsuccessful
+ /
+
+/
+  @swagger
+  /users/logout:
+    post:
+      description: Logs out user
+      security:
+       - jwt: []
+      responses:
+        200:
+          description: Logout Successful
+        500:
+          description: Logout unsuccessful
+ /

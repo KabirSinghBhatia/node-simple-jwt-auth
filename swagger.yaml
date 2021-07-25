@@ -1,0 +1,175 @@
+openapi: 3.0.3
+info:
+  title: Skynox Task API
+  version: 1.0.0
+  description: |
+    ## An API built with Express and MongoDB. 
+    * This API provides a secure user registration and login system which can persist the login state in the backend itself. 
+    * Each user created in this environment will exist for after 5 minutes after creation. 
+    * Use `token` provided by [user signup](/#/default/post_users) and [user login](#/default/post_users_login) routes for Authorization.
+
+paths:
+  /users:
+    post:
+      consumes:
+        - application/json
+      requestBody:
+        content:
+          application/json:
+            name: user
+            description: new user data
+            required: true
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: johndoe@abc.com
+                name:
+                  type: string
+                  example: John Doe
+                password:
+                  type: string
+                  example: somepass
+                age:
+                  type: number
+                  example: 20
+      description: Signs up user
+      responses:
+        201:
+          description: Signup successful
+          $ref: "#/components/responses/UserData"
+        400:
+          description: Unable to singup user
+
+  /users/login:
+    post:
+      consumes:
+        - application/json
+
+      requestBody:
+        content:
+          application/json:
+            name: user
+            description: new user data
+            required: true
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: johndoe@abc.com
+                password:
+                  type: string
+                  example: somepass
+      description: Logs in user
+      responses:
+        200:
+          $ref: "#/components/responses/UserData"
+        400:
+          description: Login unsuccessful
+
+  /users/me:
+    get:
+      description: Returns authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: "#/components/responses/UserData"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        500:
+          description: Server error
+
+  /users/logout:
+    post:
+      description: Logs out user from current session based on client's bearer token.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Successful logout
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        500:
+          description: Server error
+
+  /users/logoutAll:
+    post:
+      description: Logs out user from all session depending on client's bearer token.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Successful logout
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        500:
+          description: Server error
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid, or the user does not have access to perform the action
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Please authenticate"
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Not Found"
+    UserData:
+      description: Successful operation with JSON object containing user data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
+                properties:
+                  age:
+                    type: number
+                    example: 20
+                  __id:
+                    type: string
+                    example: 60fd4a4ca9ed6c3a79dfa419
+                  name:
+                    type: string
+                    example: John Doe
+                  email:
+                    type: string
+                    example: johndoe@abc.com
+                  createdAt:
+                    type: string
+                    example: 2021-07-25T11:26:04.018Z
+                  updatedAt:
+                    type: string
+                    example: 2021-07-25T11:26:06.012Z
+              token:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGZkNGE0Y2E5ZWQ2YzNhNzlkZmE0MTkiLCJpYXQiOjE2MjcyMTIzNjZ9.TdqgLCLPa_h7zZu9lejyVAYUx-AZ62Ky1562HWzh94A
