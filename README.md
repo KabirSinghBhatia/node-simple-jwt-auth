@@ -1,4 +1,4 @@
-# Skynox Task App
+# Node.js Simple JWT Authentication
 
 ## An API built with Express and MongoDB.
 
